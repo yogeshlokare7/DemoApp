@@ -95,8 +95,8 @@ public class User implements Serializable{
     @Column(name="status")
 	private Character status;
 	
-	@Column(name="login_allowed")
-	private Boolean loginAllowed;
+	@Column(name="loginallowed")
+	private Boolean loginallowed;
     
 	@Column(name="colone")
 	private String colone;
@@ -267,18 +267,15 @@ public class User implements Serializable{
 	public void setStatus(Character status) {
 		this.status = status;
 	}
-
-	public Boolean getLoginAllowed() {
-		return loginAllowed;
-	}
-
-	public void setLoginAllowed(Boolean loginAllowed) {
-		this.loginAllowed = loginAllowed;
-	}
 	
-	public String getName() {
-		return firstname + " "+lastname;
+	public Boolean getLoginallowed() {
+		return loginallowed;
 	}
+
+	public void setLoginallowed(Boolean loginallowed) {
+		this.loginallowed = loginallowed;
+	}
+
 
 	public String getColone() {
 		return colone;
