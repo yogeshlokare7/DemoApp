@@ -28,6 +28,7 @@ public class CodeGeneratorUtils
 	public static void main(String arags[]) {
 		CodeGeneratorUtils codeGeneratorUtils = new CodeGeneratorUtils();
 		codeGeneratorUtils.generateRandomPassword();
-		System.out.println("date"+new Date());
+		String pasword = SecureProcess.encrypt("12345678");
+		System.out.println(pasword);
 	}
 }
