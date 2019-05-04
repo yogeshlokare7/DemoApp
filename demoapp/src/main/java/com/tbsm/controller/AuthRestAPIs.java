@@ -47,7 +47,7 @@ public class AuthRestAPIs {
 	public Boolean updatePassword(@PathVariable("id") Long id, @RequestParam String password) throws ResourceNotFoundException {
 		User user = userService.getUserById(id);
 		if(user!=null) {
-			user.setToken("-");
+			user.setToken(null);
 			user.setPassword(SecureProcess.encrypt(password));
 			userService.save(user);
 			return true;
