@@ -110,8 +110,9 @@ public class User implements Serializable{
     @Column(name = "apartment")
     private String apartment;
     
-    @Column(name = "societyid")
-    private Long societyid;
+    @JoinColumn(name="societyid", referencedColumnName = "id")
+    @ManyToOne
+    private SocietyMaster societyid;
     
     @JoinColumn(name="role", referencedColumnName = "id")
     @ManyToOne
@@ -315,11 +316,11 @@ public class User implements Serializable{
 		this.apartment = apartment;
 	}
 
-	public Long getSocietyid() {
+	public SocietyMaster getSocietyid() {
 		return societyid;
 	}
 
-	public void setSocietyid(Long societyid) {
+	public void setSocietyid(SocietyMaster societyid) {
 		this.societyid = societyid;
 	}
 
