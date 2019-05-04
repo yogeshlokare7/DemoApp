@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.tbsm.exception.ResourceNotFoundException;
 import com.tbsm.model.Resident;
-import com.tbsm.model.SocietyMaster;
 import com.tbsm.repository.ResidentRepository;
 import com.tbsm.service.ResidentService;
 
