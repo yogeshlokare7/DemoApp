@@ -24,4 +24,6 @@ public interface UserService {
 
 	User getUserByEmail(String userEmail) throws ResourceNotFoundException;
 
+	void updatePitureURL(Long id, String pictureUrl);
+
 }

@@ -80,4 +80,10 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("USer not found for this id :: " + userEmail));
 	}
 
+	@Override
+	public void updatePitureURL(Long id, String pictureUrl) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
