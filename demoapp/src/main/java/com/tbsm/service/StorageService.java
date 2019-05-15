@@ -25,5 +25,7 @@ public interface StorageService {
 	 * @return
 	 */
 	public Resource loadFileTest(String type, String filename);
+	public void storeNew(Long id, MultipartFile file, String type, HttpServletRequest request);
+	public Resource getFile(String type, String filename);
 	
 }

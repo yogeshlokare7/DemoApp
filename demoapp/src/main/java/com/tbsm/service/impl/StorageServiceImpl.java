@@ -52,17 +52,17 @@ public class StorageServiceImpl implements StorageService {
 //	TourEventMappingService tourEventServiceMapping;
 
 	final private String USER = "user";
-	final private String PRESENTER = "presenter";
-	final private String EVENT = "event";
-	final private String STAFF = "staff";
-	final private String CANDIDATE = "candidate";
+//	final private String PRESENTER = "presenter";
+//	final private String EVENT = "event";
+//	final private String STAFF = "staff";
+//	final private String CANDIDATE = "candidate";
 
 	private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 	public static final String EXTERNAL_FILE_PATH = "C:\\tbsm\\";
 	public static final String EXTERNAL_FILE_PATH2 = "C:\\tbsm\\homestayproperty";
 
 	/* new test file */
-	public static final String EXTERNAL_FILE_PATH_TEST = "C:\\tbsm\\test\\upload";
+	public static final String EXTERNAL_FILE_PATH_TEST = "C:\\tbsm\\upload";
 
 	/**
 	 * Current Working Service
@@ -99,7 +99,7 @@ public class StorageServiceImpl implements StorageService {
 			File dest = new File(dir.getAbsolutePath() + File.separator + filename);
 			copyFileUsingStream(src, dest);
 			String path = request.getRequestURL().toString();
-			String pictureUrl = dir.getPath() + File.separator + filename;
+			String pictureUrl = path + "?type=" + type;
 			StoreImagePath(id, type, pictureUrl);
 		} catch (Exception e) {
 			logger.debug(e.toString());
@@ -162,7 +162,7 @@ public class StorageServiceImpl implements StorageService {
 
 	@Override
 	public Resource loadFile(String type, String filename) {
-		File dir = new File(EXTERNAL_FILE_PATH + File.separator + type);
+		File dir = new File(EXTERNAL_FILE_PATH_TEST + File.separator + type);
 		try {
 			String defaultFile = type + "_default.png";
 			if (!dir.exists())
@@ -338,6 +338,38 @@ public class StorageServiceImpl implements StorageService {
 				Resource resource2 = new UrlResource(file2.toUri());
 				return resource2;
 			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("FAIL!, Something went wrong. Please try again.");
+		}
+	}
+
+	@Override
+	public void storeNew(Long id, MultipartFile file, String type, HttpServletRequest request) {
+		logger.debug("inside StorageServiceImpl.store() Method : save the Image");
+		File dir = new File(EXTERNAL_FILE_PATH_TEST + File.separator + type);
+		try {
+			if (!dir.exists())
+				dir.mkdirs();
+			File src = convert(file);
+			File dest = new File(dir.getAbsolutePath() + File.separator + src.getName());
+			copyFileUsingStream(src, dest);
+			//String path = request.getRequestURL().toString();
+			String pictureUrl = src.getName();
+			StoreImagePath(id, type, pictureUrl);
+		} catch (Exception e) {
+			logger.debug(e.toString());
+			throw new RuntimeException("FAIL!");
+		}
+	}
+
+	@Override
+	public Resource getFile(String type, String filename) {
+		File dir = new File(EXTERNAL_FILE_PATH_TEST + File.separator + type);
+		try {
+			if (!dir.exists())
+				dir.mkdirs();
+			Path file = Paths.get(dir.getAbsolutePath()).resolve(filename);
+			return new UrlResource(file.toUri());
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("FAIL!, Something went wrong. Please try again.");
 		}

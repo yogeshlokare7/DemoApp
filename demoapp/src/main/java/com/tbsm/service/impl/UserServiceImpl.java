@@ -82,8 +82,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void updatePitureURL(Long id, String pictureUrl) {
-		// TODO Auto-generated method stub
-		
+		userRepository.updatePitureURL(id, pictureUrl);
 	}
 
 }

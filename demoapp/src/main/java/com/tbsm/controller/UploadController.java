@@ -38,9 +38,14 @@ public class UploadController {
 	StorageService storageService;
  
 	List<String> files = new ArrayList<String>();
+	
+	public static final String USER = "user";
+	public static final String SOCIETY = "society";
  
-	@PostMapping("/upload/{id}")
-	public ResponseEntity<Map<String,Boolean>> handleFileUpload(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam(defaultValue="user") String type, HttpServletRequest request) {
+	@PostMapping("/uploadtest/{id}")
+	public ResponseEntity<Map<String,Boolean>> handleFileUpload(@PathVariable Long id, 
+			@RequestParam("file") MultipartFile file,
+			@RequestParam(defaultValue="user") String type, HttpServletRequest request) {
 		String filename = type+"_"+id+".png";
 		try {
 			storageService.store(id, file, type, filename, request);
@@ -59,11 +64,10 @@ public class UploadController {
 	 * @throws IOException
 	 */
 	
-	@PostMapping("/uploadtest/{id}")
+	@PostMapping("/upload/{id}")
 	public ResponseEntity<Map<String,Boolean>> handleFileUpload2(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam(defaultValue="user") String type, HttpServletRequest request) {
-		String filename = type+"_"+id;
 		try {
-			storageService.store(id, file, type, filename, request);
+			storageService.storeNew(id, file, type, request);
 			return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("status", true));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(Collections.singletonMap("status", false));
@@ -116,6 +120,24 @@ public class UploadController {
 	public ResponseEntity<Resource> getFile(@PathVariable Integer id, @RequestParam(defaultValue="user") String type) {
 		String filename = type+"_"+id+".png";
 		Resource file = storageService.loadFile(type, filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
+	
+	@GetMapping("/userpicture")
+	@ResponseBody
+	public ResponseEntity<Resource> getFile(@RequestParam(defaultValue="user_default.png") String filename) {
+		Resource file = storageService.getFile(USER, filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
+	
+	@GetMapping("/societypicture")
+	@ResponseBody
+	public ResponseEntity<Resource> getCompanyFile(@RequestParam(defaultValue="society_default.png") String filename) {
+		Resource file = storageService.getFile(SOCIETY, filename);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
