@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tbsm.exception.MyFileNotFoundException;
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.service.SocietyService;
 import com.tbsm.service.StorageService;
 import com.tbsm.service.UserService;
 
@@ -32,6 +33,10 @@ public class StorageServiceImpl implements StorageService {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	SocietyService societyService;
+
 
 //	@Autowired
 //	StaffService staffService;
@@ -54,7 +59,7 @@ public class StorageServiceImpl implements StorageService {
 	final private String USER = "user";
 //	final private String PRESENTER = "presenter";
 //	final private String EVENT = "event";
-//	final private String STAFF = "staff";
+	final private String SOCIETY = "society";
 //	final private String CANDIDATE = "candidate";
 
 	private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
@@ -113,9 +118,9 @@ public class StorageServiceImpl implements StorageService {
 		case USER:
 			userService.updatePitureURL(id, pictureUrl);
 			break;
-//		case STAFF:
-//			staffService.updatePitureURL(id, pictureUrl);
-//			break;
+		case SOCIETY:
+			societyService.updatePitureURL(id, pictureUrl);
+			break;
 //		case CANDIDATE:
 //			candidateService.updatePitureURL(id, pictureUrl);
 //			break;

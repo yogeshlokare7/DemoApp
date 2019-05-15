@@ -42,7 +42,7 @@ public class UploadController {
 	public static final String USER = "user";
 	public static final String SOCIETY = "society";
  
-	@PostMapping("/uploadtest/{id}")
+	@PostMapping("/upload/{id}")
 	public ResponseEntity<Map<String,Boolean>> handleFileUpload(@PathVariable Long id, 
 			@RequestParam("file") MultipartFile file,
 			@RequestParam(defaultValue="user") String type, HttpServletRequest request) {
@@ -64,7 +64,7 @@ public class UploadController {
 	 * @throws IOException
 	 */
 	
-	@PostMapping("/upload/{id}")
+	@PostMapping("/uploadtest/{id}")
 	public ResponseEntity<Map<String,Boolean>> handleFileUpload2(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam(defaultValue="user") String type, HttpServletRequest request) {
 		try {
 			storageService.storeNew(id, file, type, request);

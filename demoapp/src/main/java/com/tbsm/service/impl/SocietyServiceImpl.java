@@ -68,4 +68,10 @@ public class SocietyServiceImpl implements SocietyService{
 		return (List<SocietyMaster>) repo.findAll();
 	}
 
+	@Override
+	public void updatePitureURL(Long id, String pictureUrl) {
+		// TODO Auto-generated method stub
+		repo.updatePitureURL(id, pictureUrl);
+	}
+
 }

@@ -75,6 +75,9 @@ public class SocietyMaster implements Serializable {
     @Size(max = 70)
     @Column(name = "society_code")
     private String societyCode;
+    @Column(name = "picture")
+    private String picture;
+
 
     public SocietyMaster() {
     	
@@ -199,6 +202,12 @@ public class SocietyMaster implements Serializable {
 		this.societyCode = societyCode;
 	}
 
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 	@Override
 	public String toString() {
 		return "SocietyMaster [societyId=" + id + ", societyName=" + societyName + ", email=" + email + ", fax="

@@ -22,4 +22,6 @@ public interface SocietyService {
 	public Map<String, Boolean> removeSocietyById(Long societyId) throws ResourceNotFoundException;
 
 	public List<SocietyMaster> getAllSocietys();
+
+	public void updatePitureURL(Long id, String pictureUrl);
 }
