@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.exception.ResourceNotFoundException;
-import com.tbsm.model.Resident;
 import com.tbsm.model.Role;
 import com.tbsm.service.RoleService;
 

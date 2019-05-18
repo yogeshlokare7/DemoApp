@@ -1,5 +1,7 @@
 package com.tbsm.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,5 +18,8 @@ public interface SocietyRepository extends PagingAndSortingRepository<SocietyMas
 	@Transactional
 	@Query(value="update society_master SET picture =?2 WHERE id =?1", nativeQuery=true)
 	void updatePitureURL(Long id, String pictureUrl);
+
+	@Query(value="SELECT * FROM society_master where id != 1 order by id desc", nativeQuery=true)
+	List<SocietyMaster> findAllSociety();
 
 }

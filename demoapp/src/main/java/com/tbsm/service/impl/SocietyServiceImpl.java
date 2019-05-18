@@ -65,7 +65,7 @@ public class SocietyServiceImpl implements SocietyService{
 	@Override
 	public List<SocietyMaster> getAllSocietys() {
 		logger.debug("inside SocietyServiceImpl.getAllSocietys() Method ");
-		return (List<SocietyMaster>) repo.findAll();
+		return repo.findAllSociety();
 	}
 
 	@Override
