@@ -24,4 +24,8 @@ public interface SocietyService {
 	public List<SocietyMaster> getAllSocietys();
 
 	public void updatePitureURL(Long id, String pictureUrl);
+
+	public Long getCount();
+
+	public Long getSalesCount();
 }

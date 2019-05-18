@@ -85,4 +85,14 @@ public class UserServiceImpl implements UserService{
 		userRepository.updatePitureURL(id, pictureUrl);
 	}
 
+	@Override
+	public Long getSocietyAdminCount() {
+		return userRepository.count() - 1;
+	}
+
+	@Override
+	public Long getSocietyUSerCount() {
+		return (long) 0;
+	}
+
 }

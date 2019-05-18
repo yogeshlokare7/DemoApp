@@ -22,6 +22,7 @@ public class WelcomeController {
 		String msg = "Demo App Services: Success \n Date: " + new Date().toString();
 		return new ResponseEntity<>(new ResponseMessage(msg), HttpStatus.OK);
 	}
+	
 }
 
 

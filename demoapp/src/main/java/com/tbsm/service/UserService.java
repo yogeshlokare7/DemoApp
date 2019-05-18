@@ -26,4 +26,8 @@ public interface UserService {
 
 	void updatePitureURL(Long id, String pictureUrl);
 
+	Long getSocietyAdminCount();
+
+	Long getSocietyUSerCount();
+
 }

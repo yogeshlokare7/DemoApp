@@ -74,4 +74,14 @@ public class SocietyServiceImpl implements SocietyService{
 		repo.updatePitureURL(id, pictureUrl);
 	}
 
+	@Override
+	public Long getCount() {
+		return repo.count();
+	}
+
+	@Override
+	public Long getSalesCount() {
+		return (long) 0;
+	}
+
 }
