@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.model.Resident;
 import com.tbsm.model.Role;
 import com.tbsm.service.RoleService;
 
@@ -34,21 +37,28 @@ public class RoleController {
 	
 	@GetMapping("/list")
 	public Iterable<Role> showList(){
-		logger.debug("inside SecurityUserController.showList() method");
+		logger.debug("inside Role.showList() method");
 		Iterable<Role> list = roleService.getAllRoles();
 		return list;
 	}
 	
+	@GetMapping("")
+	public Page<Role> showPage(Pageable pageable){
+		logger.debug("inside ResidentController.showPage() method");
+		Page<Role> pageInfo = roleService.listByPage(pageable);
+		return pageInfo;
+	}
+	
 	@PostMapping("")
 	public ResponseEntity<Role> saveResident(@Valid @RequestBody Role role){
-		logger.debug("inside SecurityUserController.saveResident() method");
+		logger.debug("inside Role.saveResident() method");
 		Role role2 = roleService.saveRole(role);
 		return ResponseEntity.ok().body(role2);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Role> getResidentById(@PathVariable(value = "id") Long roleId) throws ResourceNotFoundException{
-		logger.debug("inside SecurityUserController.getResidentById() method");
+		logger.debug("inside Role.getResidentById() method");
 		Role role = roleService.getRoleById(roleId);
 		return ResponseEntity.ok().body(role);
 	}
@@ -56,7 +66,7 @@ public class RoleController {
 	@DeleteMapping("/{id}")
 	public Map<String, Boolean> deleteResident(@PathVariable(value = "id") Long roleId)
 			throws ResourceNotFoundException {
-		logger.debug("inside SecurityUserController.deleteResident() method: "+roleId );
+		logger.debug("inside Role.deleteResident() method: "+roleId );
 		Map<String, Boolean> response = new HashMap<String, Boolean>();
 		try {
 			response = roleService.removeRoleById(roleId);

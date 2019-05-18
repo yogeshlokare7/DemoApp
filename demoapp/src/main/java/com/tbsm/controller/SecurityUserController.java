@@ -27,7 +27,7 @@ import com.tbsm.service.SecurityUserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value="/api/securityUser")
+@RequestMapping(value="/api/securityuser")
 public class SecurityUserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecurityUserController.class);
