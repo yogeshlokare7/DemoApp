@@ -1,5 +1,7 @@
 package com.tbsm.service.impl;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User login(String username, String password) throws ResourceNotFoundException {
-		User user = userRepository.findByUsername(username);
+		Optional<User> user = userRepository.findByUsername(username);
 		String pwd = SecureProcess.encrypt(password);
-		if(user.getPassword().equalsIgnoreCase(pwd)) {
-			return user;
+		if(user.get().getPassword().equalsIgnoreCase(pwd)) {
+			return user.get();
 		}else {
 			throw new ResourceNotFoundException("Wrong Password. Please try again");
 		}
@@ -93,6 +95,25 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Long getSocietyUSerCount() {
 		return (long) 0;
+	}
+
+	@Override
+	public User getUserByUsername(String username) throws ResourceNotFoundException {
+		logger.debug("inside  UserServiceImpl.getUserById() method");
+		return userRepository.findByUsername(username)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found for this username :: " + username));
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		logger.debug("inside  UserServiceImpl.existsByEmail() method");
+		return userRepository.existsByEmail(email);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		logger.debug("inside  UserServiceImpl.existsByUsername() method");
+		return userRepository.existsByUsername(username);
 	}
 
 }

@@ -22,4 +22,10 @@ public interface ResidentService {
 	public Map<String, Boolean> removeResidentById(Long residentId) throws ResourceNotFoundException;
 
 	public List<Resident> getAllResidents();
+
+	public boolean existsByUsername(String username);
+
+	public boolean existsByEmail(String email);
+
+	public void updatePitureURL(Long id, String pictureUrl);
 }

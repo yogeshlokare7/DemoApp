@@ -16,7 +16,7 @@ import com.tbsm.model.User;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long>{
 
-	User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 	
 	Optional<User> findByEmail(String email);
 	
@@ -26,6 +26,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>{
 	@Transactional
 	@Query(value="update users SET picture =?2 WHERE id =?1", nativeQuery=true)
 	void updatePitureURL(Long id, String pictureUrl);
+
+	boolean existsByEmail(String email);
+
+	boolean existsByUsername(String username);
 	
 
 }

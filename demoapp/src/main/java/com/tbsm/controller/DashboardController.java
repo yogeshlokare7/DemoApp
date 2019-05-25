@@ -24,7 +24,7 @@ public class DashboardController {
 	private SocietyService societyService;
 
 
-	@GetMapping("admincounters")
+	@GetMapping("/admincounters")
 	public ResponseEntity<CounterDto> getUserById(){
 		Long societyCount = societyService.getCount();
 		Long societyAdminCount = userService.getSocietyAdminCount();

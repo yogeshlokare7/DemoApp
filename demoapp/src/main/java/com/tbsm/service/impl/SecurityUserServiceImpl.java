@@ -58,4 +58,19 @@ public class SecurityUserServiceImpl implements SecurityUserService{
 		return (List<SecurityUser>) repo.findAll();
 	}
 
+	@Override
+	public void updatePitureURL(Long id, String pictureUrl) {
+		repo.updatePitureURL(id, pictureUrl);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		return repo.existsByUsername(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return repo.existsByEmail(email);
+	}
+
 }

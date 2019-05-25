@@ -12,8 +12,9 @@
 	<artifactId>demoapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
 	<name>demoapp</name>
-	<description>Demo App Project </description>
+	<description>Demo App Project</description>
 
 	<properties>
 		<java.version>1.8</java.version>

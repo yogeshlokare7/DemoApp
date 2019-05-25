@@ -22,4 +22,10 @@ public interface SecurityUserService {
 	public Map<String, Boolean> removeSecurityUserById(Long securityUserId) throws ResourceNotFoundException;
 
 	public List<SecurityUser> getAllSecurityUsers();
+
+	public void updatePitureURL(Long id, String pictureUrl);
+
+	public boolean existsByUsername(String username);
+
+	public boolean existsByEmail(String email);
 }

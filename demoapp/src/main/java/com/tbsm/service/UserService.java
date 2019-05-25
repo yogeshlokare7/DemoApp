@@ -22,12 +22,18 @@ public interface UserService {
 
 	Boolean removeUserById(Long userId) throws ResourceNotFoundException;
 
-	User getUserByEmail(String userEmail) throws ResourceNotFoundException;
-
 	void updatePitureURL(Long id, String pictureUrl);
 
 	Long getSocietyAdminCount();
 
 	Long getSocietyUSerCount();
+
+	public User getUserByUsername(String username) throws ResourceNotFoundException;
+
+	public User getUserByEmail(String userEmail) throws ResourceNotFoundException;
+
+	public boolean existsByEmail(String email);
+
+	public boolean existsByUsername(String username);
 
 }

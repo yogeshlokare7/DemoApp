@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tbsm.exception.MyFileNotFoundException;
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.service.ResidentService;
+import com.tbsm.service.SecurityUserService;
 import com.tbsm.service.SocietyService;
 import com.tbsm.service.StorageService;
 import com.tbsm.service.UserService;
@@ -36,9 +38,12 @@ public class StorageServiceImpl implements StorageService {
 	@Autowired
 	SocietyService societyService;
 
+	@Autowired
+	ResidentService residnetService;
+	
+	@Autowired
+	SecurityUserService securityUserService;
 
-//	@Autowired
-//	StaffService staffService;
 //
 //	@Autowired
 //	CandidateService candidateService;
@@ -56,10 +61,10 @@ public class StorageServiceImpl implements StorageService {
 //	TourEventMappingService tourEventServiceMapping;
 
 	final private String USER = "user";
-//	final private String PRESENTER = "presenter";
-//	final private String EVENT = "event";
 	final private String SOCIETY = "society";
-//	final private String CANDIDATE = "candidate";
+	final private String SECURITYUSER = "securityuser";
+	final private String RESIDENT = "resident";
+	final private String DAILYSTAFF = "dailystaff";
 
 	private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 	public static final String EXTERNAL_FILE_PATH = "C:\\tbsm\\";
@@ -120,12 +125,12 @@ public class StorageServiceImpl implements StorageService {
 		case SOCIETY:
 			societyService.updatePitureURL(id, pictureUrl);
 			break;
-//		case CANDIDATE:
-//			candidateService.updatePitureURL(id, pictureUrl);
-//			break;
-//		case PRESENTER:
-//			presenterService.updatePitureURL(id, pictureUrl);
-//			break;
+		case RESIDENT:
+			residnetService.updatePitureURL(id, pictureUrl);
+			break;
+		case SECURITYUSER:
+			securityUserService.updatePitureURL(id, pictureUrl);
+			break;
 //		case EVENT:
 //			eventService.updatePictureURL(id, pictureUrl);
 //			break;
@@ -275,7 +280,7 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public Resource getTourEventsByTourid(Long tourId, HttpServletRequest request) throws ResourceNotFoundException {
 		String fileName = "Tour_Calendar_" + tourId + ".pdf";
-		String dest = EXTERNAL_FILE_PATH + "\\" + fileName;
+		//String dest = EXTERNAL_FILE_PATH + "\\" + fileName;
 //		Tour tour = tourService.getTourById(tourId);
 //		if (tour != null) {
 //			List<TourEventMapping> tourEventMapList = tourEventServiceMapping
