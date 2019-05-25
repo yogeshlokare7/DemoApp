@@ -26,9 +26,10 @@ public class RegistrationTemplate {
 				"    <p style=\"padding-left: 10px;padding-right: 10px;line-height: 22px;\">" + 
 				"    Please login here:"+url+" " + 
 				"        </p>\n" + 
-				"    </div>\n" + 
+				"\n\n"+
 				"  	Best Regards,<br>\n" + 
 				"  	The Tejovat Team</p>" + 
+				"    </div>\n" + 
 				"    </body>" + 
 				"</html>" + 
 				"";
