@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "society_users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
             "username"
         }),
@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
             "email"
         })
 })
-public class User implements Serializable{
+public class SocietyUser implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -110,24 +110,15 @@ public class User implements Serializable{
     @Column(name = "apartment")
     private String apartment;
     
-    @JoinColumn(name="role", referencedColumnName = "id")
+    @JoinColumn(name="societyid", referencedColumnName = "id")
     @ManyToOne
-    private Role role;
+    private SocietyMaster societyid;
 
-    public User() {
-    	
-    }
+	public SocietyUser() {
+		
+	}
 
-    public User(String firstname, String lastname, String username, String email, String password, Character status) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.status = status;
-    }
-
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -135,15 +126,7 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstname() {
+	public String getFirstname() {
 		return firstname;
 	}
 
@@ -159,15 +142,23 @@ public class User implements Serializable{
 		this.lastname = lastname;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getEmail() {
-        return email;
-    }
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getContactno() {
+	public String getContactno() {
 		return contactno;
 	}
 
@@ -176,12 +167,12 @@ public class User implements Serializable{
 	}
 
 	public String getPassword() {
-        return password;
-    }
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getStreetno() {
 		return streetno;
@@ -199,20 +190,20 @@ public class User implements Serializable{
 		this.streetname = streetname;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public String getPostalcode() {
 		return postalcode;
 	}
 
 	public void setPostalcode(String postalcode) {
 		this.postalcode = postalcode;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getProvince() {
@@ -229,6 +220,14 @@ public class User implements Serializable{
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getPicture() {
@@ -255,12 +254,12 @@ public class User implements Serializable{
 		this.dob = dob;
 	}
 
-	public String getToken() {
-		return token;
+	public String getRating() {
+		return rating;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setRating(String rating) {
+		this.rating = rating;
 	}
 
 	public Character getStatus() {
@@ -270,7 +269,7 @@ public class User implements Serializable{
 	public void setStatus(Character status) {
 		this.status = status;
 	}
-	
+
 	public Boolean getLoginallowed() {
 		return loginallowed;
 	}
@@ -278,7 +277,6 @@ public class User implements Serializable{
 	public void setLoginallowed(Boolean loginallowed) {
 		this.loginallowed = loginallowed;
 	}
-
 
 	public String getColone() {
 		return colone;
@@ -296,14 +294,6 @@ public class User implements Serializable{
 		this.coltwo = coltwo;
 	}
 
-	public String getRating() {
-		return rating;
-	}
-
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
-
 	public String getApartment() {
 		return apartment;
 	}
@@ -311,13 +301,23 @@ public class User implements Serializable{
 	public void setApartment(String apartment) {
 		this.apartment = apartment;
 	}
-	
-	public Role getRole() {
-		return role;
+
+	public SocietyMaster getSocietyid() {
+		return societyid;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setSocietyid(SocietyMaster societyid) {
+		this.societyid = societyid;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "SocietyUser [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", username="
+				+ username + ", email=" + email + ", contactno=" + contactno + ", password=" + password + ", streetno="
+				+ streetno + ", streetname=" + streetname + ", postalcode=" + postalcode + ", city=" + city
+				+ ", province=" + province + ", country=" + country + ", token=" + token + ", picture=" + picture
+				+ ", gender=" + gender + ", dob=" + dob + ", rating=" + rating + ", status=" + status
+				+ ", loginallowed=" + loginallowed + ", colone=" + colone + ", coltwo=" + coltwo + ", apartment="
+				+ apartment + ", societyid=" + societyid + "]";
+	}
 }

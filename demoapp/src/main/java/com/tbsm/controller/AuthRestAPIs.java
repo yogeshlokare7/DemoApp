@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.model.SocietyUser;
 import com.tbsm.model.User;
 import com.tbsm.request.LoginForm;
 import com.tbsm.service.EmailService;
+import com.tbsm.service.SocietyUserService;
 import com.tbsm.service.UserService;
 import com.tbsm.utils.ApplicationUtility;
 import com.tbsm.utils.SecureProcess;
@@ -33,9 +35,12 @@ public class AuthRestAPIs {
 	UserService userService;
 
 	@Autowired
+	SocietyUserService societyService;
+
+	@Autowired
 	EmailService emailService;
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) throws ResourceNotFoundException {
 		String username = loginRequest.getUsername();
 		String password = loginRequest.getPassword();
@@ -43,13 +48,35 @@ public class AuthRestAPIs {
 		return ResponseEntity.ok(user);
 	}
 
-	@GetMapping("/update/{id}")
-	public Boolean updatePassword(@PathVariable("id") Long id, @RequestParam String password) throws ResourceNotFoundException {
+	@PostMapping("/society/login")
+	public ResponseEntity<?> authenticateSocietyUser(@Valid @RequestBody LoginForm loginRequest) throws ResourceNotFoundException {
+		String username = loginRequest.getUsername();
+		String password = loginRequest.getPassword();
+		SocietyUser societyUser = societyService.login(username, password);
+		return ResponseEntity.ok(societyUser);
+	}
+
+	@PostMapping("/update/{id}")
+	public Boolean updatePassword(@PathVariable("id") Long id, @RequestBody User loginRequest) throws ResourceNotFoundException {
 		User user = userService.getUserById(id);
+		String password = loginRequest.getPassword();
 		if(user!=null) {
 			user.setToken(null);
 			user.setPassword(SecureProcess.encrypt(password));
 			userService.save(user);
+			return true;
+		}
+		return false;
+	}
+
+	@GetMapping("/society/update/{id}")
+	public Boolean updateSocietyUserPassword(@PathVariable("id") Long id, @RequestBody User loginRequest) throws ResourceNotFoundException {
+		SocietyUser user = societyService.getSocietyUserById(id);
+		String password = loginRequest.getPassword();
+		if(user!=null) {
+			user.setToken(null);
+			user.setPassword(SecureProcess.encrypt(password));
+			societyService.save(user);
 			return true;
 		}
 		return false;
@@ -68,6 +95,35 @@ public class AuthRestAPIs {
 					"    <p style=\"padding-left: 10px;padding-right: 10px;line-height: 22px;\"><a>"+ 
 					appUrl+"</a>" + "\n" + "\n" 
 					+ "\n" + "\n" +
+					"\n" + 
+					" <p>NOTE : This is an automated message. Please do not reply.</p>"+ "\n" +  "\n"+
+					" \n<p>Best Regards,<br>\n" + 
+					" The Tejovat Team</p>" + 
+					" \n" ;
+			try {
+				emailService.sendEmailHtml(emailContaint, user.getEmail(), "Password Reset Request");
+			}catch(Exception e) {
+				//logger.debug("Something is wrong. Please try again.");
+			}
+			return ResponseEntity.ok().body(user);	
+		}else {
+			return ResponseEntity.ok().body(user);
+		}
+	}
+
+	@GetMapping("/society/forgot")
+	public ResponseEntity<SocietyUser> societyForgotPasswordForm(@RequestParam("userEmail") String userEmail, @RequestParam("forgotDate") String forgotDate) throws ResourceNotFoundException {
+		SocietyUser user = societyService.getSocietyUserByEmail(userEmail);
+		if (user!=null) {
+			user.setToken(UUID.randomUUID().toString());
+			societyService.save(user);
+			String appUrl = ApplicationUtility.FORGOT_URL+user.getToken()+";date="+forgotDate;
+			String emailContaint =   "Hi "+user.getFirstname()+" ," + "\n" + "\n" +
+					"    To reset your password, click the link below:"+
+					"    \n" + 
+					"    <p style=\"padding-left: 10px;padding-right: 10px;line-height: 22px;\"><a>"+ 
+					appUrl+"</a>" + "\n" + "\n" 
+					+ "\n" + "\n" +
 					" NOTE : This is an automated message. Please do not reply."+ "\n" +  "\n"; 
 			try {
 				emailService.sendEmailHtml(emailContaint, user.getEmail(), "Password Reset Request");
@@ -78,5 +134,11 @@ public class AuthRestAPIs {
 		}else {
 			return ResponseEntity.ok().body(user);
 		}
+	}
+	
+	@GetMapping(value = "/checkUserByToken")
+	public ResponseEntity<User> getUserByUserResetToken(@RequestParam("resetToken") String resetToken) throws ResourceNotFoundException {
+		User user = userService.getUserByToken(resetToken);
+		return ResponseEntity.ok().body(user);
 	}
 }

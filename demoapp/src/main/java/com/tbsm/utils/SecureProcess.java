@@ -8,7 +8,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  * 
- * @author Pravin Tumasre
  *
  */
 public class SecureProcess {

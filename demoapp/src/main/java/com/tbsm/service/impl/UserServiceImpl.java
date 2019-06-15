@@ -1,7 +1,5 @@
 package com.tbsm.service.impl;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,12 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User login(String username, String password) throws ResourceNotFoundException {
-		Optional<User> user = userRepository.findByUsername(username);
+		User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found for this username :: " + username));
 		String pwd = SecureProcess.encrypt(password);
-		if(user.get().getPassword().equalsIgnoreCase(pwd)) {
-			return user.get();
+		if(user.getPassword().equalsIgnoreCase(pwd)) {
+			return user;
 		}else {
-			throw new ResourceNotFoundException("Wrong Password. Please try again");
+			throw new ResourceNotFoundException("Wrong Password. Please try again.");
 		}
 	}
 
@@ -52,11 +50,6 @@ public class UserServiceImpl implements UserService{
 		return userRepository.save(user);
 	}
 
-	@Override
-	public Page<User> listPageBySocietyId(Long societyId, Pageable pageable) {
-		logger.debug("inside  UserService.listPageBySocietyId() method");
-		return userRepository.findBySocietyid(societyId, pageable);
-	}
 
 	@Override
 	public User getUserById(Long userId) throws ResourceNotFoundException {
@@ -89,12 +82,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Long getSocietyAdminCount() {
-		return userRepository.count() - 1;
-	}
-
-	@Override
-	public Long getSocietyUSerCount() {
-		return (long) 0;
+		return userRepository.count();
 	}
 
 	@Override
@@ -114,6 +102,12 @@ public class UserServiceImpl implements UserService{
 	public boolean existsByUsername(String username) {
 		logger.debug("inside  UserServiceImpl.existsByUsername() method");
 		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public User getUserByToken(String resetToken) throws ResourceNotFoundException {
+		return userRepository.findByToken(resetToken)
+		.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 	}
 
 }

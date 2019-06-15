@@ -25,27 +25,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.exception.ResourceNotFoundException;
-import com.tbsm.model.User;
+import com.tbsm.model.SocietyUser;
 import com.tbsm.response.ResponseMessage;
 import com.tbsm.service.EmailService;
-import com.tbsm.service.UserService;
+import com.tbsm.service.SocietyUserService;
 import com.tbsm.utils.CodeGeneratorUtils;
 import com.tbsm.utils.RegistrationTemplate;
 import com.tbsm.utils.SecureProcess;
+
 /**
  *
  * @author Yogesh Lokare
  */
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value="/api/user")
-public class UserController {
+@RequestMapping(value="/api/societyuser")
+public class SocietyUserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	UserService userService;
+	SocietyUserService societyUserService;
 	
 	@Autowired
 	EmailService emailService;
@@ -55,33 +55,40 @@ public class UserController {
 
 
 	@GetMapping("/list")
-	public Page<User> showPage(Pageable pageable){
+	public Page<SocietyUser> showPage(Pageable pageable){
 		logger.debug("inside UserController.showPage() method");
-		Page<User> pageInfo = userService.listByPage(pageable);
+		Page<SocietyUser> pageInfo = societyUserService.listByPage(pageable);
+		return pageInfo;
+	}
+	
+	@GetMapping("/list/{societyId}")
+	public Page<SocietyUser> showPage(@PathVariable("societyId") Long societyId, Pageable pageable){
+		logger.debug("inside UserController.showPage() method");
+		Page<SocietyUser> pageInfo = societyUserService.listPageBySocietyId(societyId, pageable);
 		return pageInfo;
 	}
 
 	@GetMapping("")
-	public Iterable<User> getAllUsers(){
+	public Iterable<SocietyUser> getAllUsers(){
 		logger.debug("inside UserController.getAllUsers() method");
-		return userService.getAll();
+		return societyUserService.getAll();
 	}
 
 	@PostMapping("")
-	public ResponseEntity<?> saveUser(@Valid @RequestBody User user) throws ResourceNotFoundException{
+	public ResponseEntity<?> saveUser(@Valid @RequestBody SocietyUser user) throws ResourceNotFoundException{
 		logger.debug("inside UserController.saveUser() method");
 		Long id = user.getId();
 		if(id != null && id > 0) {
-			User user2 = userService.getUserById(id);
+			SocietyUser user2 = societyUserService.getSocietyUserById(id);
 			Boolean sameUserName = user2.getUsername().equalsIgnoreCase(user.getUsername());
 			Boolean sameUserEmail = user2.getEmail().equalsIgnoreCase(user.getEmail());
 			if(!sameUserName) {
-				if(userService.existsByUsername(user.getUsername())) { 
+				if(societyUserService.existsBySocietyUsername(user.getUsername())) { 
 					return new ResponseEntity<>(new ResponseMessage("Username is already taken. Please try another!"), HttpStatus.BAD_REQUEST); 
 				}
 			}
 			if(!sameUserEmail) {
-				if (userService.existsByEmail(user.getEmail())) { 
+				if (societyUserService.existsByEmail(user.getEmail())) { 
 					return new ResponseEntity<>(new ResponseMessage("Email is already in use.  Please try another!"), HttpStatus.BAD_REQUEST); 
 				}
 			}
@@ -97,24 +104,23 @@ public class UserController {
 			user2.setProvince(user.getProvince());
 			user2.setCountry(user.getCountry());
 			user2.setStatus(user.getStatus());
-			user2.setRole(user.getRole());
 			user2.setDob(user.getDob());
 			user2.setGender(user.getGender());
-			User updatedUser = userService.save(user2);
+			SocietyUser updatedUser = societyUserService.save(user2);
 			return ResponseEntity.ok().body(updatedUser);
 		}else {
-			if(userService.existsByUsername(user.getUsername())) { 
+			if(societyUserService.existsBySocietyUsername(user.getUsername())) { 
 				return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"), HttpStatus.BAD_REQUEST); 
 			}
-			if (userService.existsByEmail(user.getEmail())) { 
+			if (societyUserService.existsByEmail(user.getEmail())) { 
 				return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"), HttpStatus.BAD_REQUEST); 
 			}
 			String password = new CodeGeneratorUtils().generateRandomPassword();
 			user.setPassword(SecureProcess.encrypt(password));
-			User userInfo = userService.save(user);
+			SocietyUser userInfo = societyUserService.save(user);
 			String template = new RegistrationTemplate().registerEmail(userInfo.getFirstname(), userInfo.getEmail(), password, awsWebIP.concat("/#/admin/login"));
 			try {
-				emailService.sendEmailHtml(template, user.getEmail(), "TBSM| Welcome Tejovat Admin");
+				emailService.sendEmailHtml(template, user.getEmail(), "TBSM| Welcome Society Admin");
 			}catch(Exception e){
 				logger.debug("Something is wrong. Please try again.");
 			}
@@ -123,18 +129,18 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody User user) throws ResourceNotFoundException{
+	public ResponseEntity<?> updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody SocietyUser user) throws ResourceNotFoundException{
 		logger.debug("inside UserController.updateUser() method");
-		User user2 = userService.getUserById(userId);
+		SocietyUser user2 = societyUserService.getSocietyUserById(userId);
 		Boolean sameUserName = user2.getUsername().equalsIgnoreCase(user.getUsername());
 		Boolean sameUserEmail = user2.getEmail().equalsIgnoreCase(user.getEmail());
 		if(!sameUserName) {
-			if(userService.existsByUsername(user.getUsername())) { 
+			if(societyUserService.existsBySocietyUsername(user.getUsername())) { 
 				return new ResponseEntity<>(new ResponseMessage("Username is already taken. Please try another!"), HttpStatus.BAD_REQUEST); 
 			}
 		}
 		if(!sameUserEmail) {
-			if (userService.existsByEmail(user.getEmail())) { 
+			if (societyUserService.existsByEmail(user.getEmail())) { 
 				return new ResponseEntity<>(new ResponseMessage("Email is already in use.  Please try another!"), HttpStatus.BAD_REQUEST); 
 			}
 		}
@@ -150,17 +156,16 @@ public class UserController {
 		user2.setProvince(user.getProvince());
 		user2.setCountry(user.getCountry());
 		user2.setStatus(user.getStatus());
-		user2.setRole(user.getRole());
 		user2.setDob(user.getDob());
 		user2.setGender(user.getGender());
-		User updatedUser = userService.save(user2);
+		SocietyUser updatedUser = societyUserService.save(user2);
 		return ResponseEntity.ok().body(updatedUser);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException{
+	public ResponseEntity<SocietyUser> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException{
 		logger.debug("inside UserController.getUserById() method");
-		User user = userService.getUserById(userId);
+		SocietyUser user = societyUserService.getSocietyUserById(userId);
 		return ResponseEntity.ok().body(user);
 	}
 
@@ -168,7 +173,7 @@ public class UserController {
 	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long userId)
 			throws ResourceNotFoundException {
 		logger.debug("inside UserController.deleteUser() method");
-		Boolean user = userService.removeUserById(userId);
+		Boolean user = societyUserService.removeSocietyUserById(userId);
 		Map<String, Boolean> response = new HashMap<>();
 		if(user) {
 			response.put("deleted", Boolean.TRUE);

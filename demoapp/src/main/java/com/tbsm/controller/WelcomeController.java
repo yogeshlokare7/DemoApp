@@ -19,7 +19,7 @@ public class WelcomeController {
 	
 	@GetMapping("/")
 	public ResponseEntity<?> test() {
-		String msg = "Demo App Services: Success \n Date: " + new Date().toString();
+		String msg = "TBSM App Services: Success \n Date: " + new Date().toString();
 		return new ResponseEntity<>(new ResponseMessage(msg), HttpStatus.OK);
 	}
 	

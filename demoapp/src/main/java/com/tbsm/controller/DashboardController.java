@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.dto.CounterDto;
 import com.tbsm.service.SocietyService;
+import com.tbsm.service.SocietyUserService;
 import com.tbsm.service.UserService;
 
 
@@ -22,13 +23,15 @@ public class DashboardController {
 
 	@Autowired
 	private SocietyService societyService;
-
+	
+	@Autowired
+	private SocietyUserService societyUserService;
 
 	@GetMapping("/admincounters")
 	public ResponseEntity<CounterDto> getUserById(){
 		Long societyCount = societyService.getCount();
-		Long societyAdminCount = userService.getSocietyAdminCount();
-		Long societyUserCount = userService.getSocietyUSerCount();
+		Long societyAdminCount = societyUserService.getSocietyUSerCount();
+		Long societyUserCount = societyUserService.getSocietyUSerCount();
 		Long salesCount= societyService.getSalesCount();
 		CounterDto counterDto = new CounterDto(societyCount, societyAdminCount, societyUserCount, salesCount);
 		return ResponseEntity.ok().body(counterDto);

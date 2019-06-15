@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.model.SocietyUser;
 import com.tbsm.model.User;
 
 public interface UserService {
@@ -16,8 +17,6 @@ public interface UserService {
 
 	User save(User user);
 
-	Page<User> listPageBySocietyId(Long societyId, Pageable pageable);
-
 	User getUserById(Long userId) throws ResourceNotFoundException;
 
 	Boolean removeUserById(Long userId) throws ResourceNotFoundException;
@@ -26,8 +25,6 @@ public interface UserService {
 
 	Long getSocietyAdminCount();
 
-	Long getSocietyUSerCount();
-
 	public User getUserByUsername(String username) throws ResourceNotFoundException;
 
 	public User getUserByEmail(String userEmail) throws ResourceNotFoundException;
@@ -35,5 +32,7 @@ public interface UserService {
 	public boolean existsByEmail(String email);
 
 	public boolean existsByUsername(String username);
+
+	User getUserByToken(String resetToken) throws ResourceNotFoundException ;
 
 }

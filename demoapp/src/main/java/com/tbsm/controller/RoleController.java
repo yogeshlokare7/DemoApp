@@ -49,7 +49,7 @@ public class RoleController {
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<Role> saveResident(@Valid @RequestBody Role role){
+	public ResponseEntity<Role> saveRole(@Valid @RequestBody Role role){
 		logger.debug("inside Role.saveResident() method");
 		Role role2 = roleService.saveRole(role);
 		return ResponseEntity.ok().body(role2);
