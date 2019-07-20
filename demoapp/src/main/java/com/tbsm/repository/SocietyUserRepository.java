@@ -11,13 +11,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.tbsm.model.SocietyMaster;
 import com.tbsm.model.SocietyUser;
 import com.tbsm.model.SocietyUser;
 
 @Repository
 public interface SocietyUserRepository extends JpaRepository<SocietyUser, Long>{
 
-	Page<SocietyUser> findBySocietyid(Long societyid, Pageable pageable);
+	Page<SocietyUser> findBySocietyid(SocietyMaster societyid, Pageable pageable);
 
 	Optional<SocietyUser> findByUsername(String username);
 
@@ -31,4 +32,7 @@ public interface SocietyUserRepository extends JpaRepository<SocietyUser, Long>{
 	boolean existsByEmail(String email);
 
 	boolean existsByUsername(String username);
+	
+	@Query(value="SELECT count(*) FROM society_users WHERE societyid =?1", nativeQuery=true)
+	Long countBySocietyId(Long societyId);
 }

@@ -1,6 +1,7 @@
 package com.tbsm.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.tbsm.exception.ResourceNotFoundException;
 import com.tbsm.model.Role;
+import com.tbsm.model.User;
 import com.tbsm.repository.RoleRepository;
+import com.tbsm.repository.UserRepository;
 import com.tbsm.service.RoleService;
 
 @Service
@@ -19,6 +22,9 @@ public class RoleServiceImpl implements RoleService{
 	
 	@Autowired
 	RoleRepository repo;
+	
+	@Autowired
+	UserRepository userRepo;
 
 	@Override
 	public Iterable<Role> getAllRoles() {
@@ -45,8 +51,13 @@ public class RoleServiceImpl implements RoleService{
 		Role optional = getRoleById(roleId);
 		Map<String, Boolean> response = new HashMap<>();
 		if(optional!=null) {
-			repo.delete(optional);
-			response.put("deleted", Boolean.TRUE);
+			List<User> list = userRepo.findByRole(optional);
+			if(list.size() <=0) {
+				repo.delete(optional);
+				response.put("deleted", Boolean.TRUE);
+			}else{
+				response.put("deleted", Boolean.FALSE);
+			}
 		}else {
 			response.put("deleted", Boolean.FALSE);
 		}

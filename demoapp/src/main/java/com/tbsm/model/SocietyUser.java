@@ -33,45 +33,33 @@ public class SocietyUser implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min=3, max = 50)
     private String firstname;
     
-    @Size(min=3, max = 50)
     private String lastname;
 
-    @Size(min=3, max = 50)
     private String username;
 
-    @Size(max = 50)
     private String email;
     
-    @Size(max = 50)
     private String contactno;
 
-    @Size(min=6, max = 100)
     private String password;
     
-    @Size(max = 70)
     @Column(name = "streetno")
     private String streetno;
     
-    @Size(max = 70)
     @Column(name = "streetname")
     private String streetname;
     
-    @Size(max = 20)
     @Column(name = "postalcode")
     private String postalcode;
     
-    @Size(max = 70)
     @Column(name = "city")
     private String city;
     
-    @Size(max = 45)
     @Column(name = "province")
     private String province;
     
-    @Size(max = 45)
     @Column(name = "country")
     private String country;
     
@@ -90,7 +78,6 @@ public class SocietyUser implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dob;
    
-    @Size(max = 10)
     @Column(name = "rating")
     private String rating;
     
@@ -106,7 +93,6 @@ public class SocietyUser implements Serializable{
 	@Column(name="coltwo")
 	private String coltwo;
 	
-    @Size(max = 70)
     @Column(name = "apartment")
     private String apartment;
     

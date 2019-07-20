@@ -23,9 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tbsm.exception.MyFileNotFoundException;
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.service.DailyStaffService;
 import com.tbsm.service.ResidentService;
 import com.tbsm.service.SecurityUserService;
 import com.tbsm.service.SocietyService;
+import com.tbsm.service.SocietyUserService;
 import com.tbsm.service.StorageService;
 import com.tbsm.service.UserService;
 
@@ -34,37 +36,44 @@ public class StorageServiceImpl implements StorageService {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	SocietyService societyService;
+	
+	@Autowired
+	SocietyUserService societyUserService;
 
 	@Autowired
 	ResidentService residnetService;
-	
+
 	@Autowired
 	SecurityUserService securityUserService;
+	
+	@Autowired
+	DailyStaffService staffService;
 
-//
-//	@Autowired
-//	CandidateService candidateService;
+	//
+	//	@Autowired
+	//	CandidateService candidateService;
 
-//	@Autowired
-//	EventMasterService eventService;
-//
-//	@Autowired
-//	PresenterService presenterService;
-//
-//	@Autowired
-//	TourService tourService;
-//
-//	@Autowired
-//	TourEventMappingService tourEventServiceMapping;
+	//	@Autowired
+	//	EventMasterService eventService;
+	//
+	//	@Autowired
+	//	PresenterService presenterService;
+	//
+	//	@Autowired
+	//	TourService tourService;
+	//
+	//	@Autowired
+	//	TourEventMappingService tourEventServiceMapping;
 
 	final private String USER = "user";
 	final private String SOCIETY = "society";
 	final private String SECURITYUSER = "securityuser";
 	final private String RESIDENT = "resident";
 	final private String DAILYSTAFF = "dailystaff";
+	final private String SOCIETYUSER = "societyuser";
 
 	private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 	public static final String EXTERNAL_FILE_PATH = "C:\\tbsm\\";
@@ -76,23 +85,23 @@ public class StorageServiceImpl implements StorageService {
 	/**
 	 * Current Working Service
 	 */
-//	@Override
-//	public void store(Long id, MultipartFile file, String type, String filename, HttpServletRequest request) {
-//		logger.debug("inside StorageServiceImpl.store() Method : save the Image");
-//		File dir = new File(EXTERNAL_FILE_PATH + File.separator + type);
-//		try {
-//			if (!dir.exists())
-//				dir.mkdirs();
-//			File src = convert(file);
-//			File dest = new File(dir.getAbsolutePath() + File.separator + filename);
-//			copyFileUsingStream(src, dest);
-//			String path = request.getRequestURL().toString();
-//			String pictureUrl = path + "?type=" + type;
-//			StoreImagePath(id, type, pictureUrl);
-//		} catch (Exception e) {
-//			throw new RuntimeException("FAIL!");
-//		}
-//	}
+	//	@Override
+	//	public void store(Long id, MultipartFile file, String type, String filename, HttpServletRequest request) {
+	//		logger.debug("inside StorageServiceImpl.store() Method : save the Image");
+	//		File dir = new File(EXTERNAL_FILE_PATH + File.separator + type);
+	//		try {
+	//			if (!dir.exists())
+	//				dir.mkdirs();
+	//			File src = convert(file);
+	//			File dest = new File(dir.getAbsolutePath() + File.separator + filename);
+	//			copyFileUsingStream(src, dest);
+	//			String path = request.getRequestURL().toString();
+	//			String pictureUrl = path + "?type=" + type;
+	//			StoreImagePath(id, type, pictureUrl);
+	//		} catch (Exception e) {
+	//			throw new RuntimeException("FAIL!");
+	//		}
+	//	}
 
 	/**
 	 * Test Store service for uploading
@@ -131,9 +140,12 @@ public class StorageServiceImpl implements StorageService {
 		case SECURITYUSER:
 			securityUserService.updatePitureURL(id, pictureUrl);
 			break;
-//		case EVENT:
-//			eventService.updatePictureURL(id, pictureUrl);
-//			break;
+		case DAILYSTAFF:
+			staffService.updatePictureURL(id, pictureUrl);
+			break;
+		case SOCIETYUSER:
+			societyUserService.updatePitureURL(id, pictureUrl);
+			break;
 		default:
 			logger.debug("inside StorageServiceImpl.StoreImagePath() Method : Switch=default");
 		}
@@ -281,16 +293,16 @@ public class StorageServiceImpl implements StorageService {
 	public Resource getTourEventsByTourid(Long tourId, HttpServletRequest request) throws ResourceNotFoundException {
 		String fileName = "Tour_Calendar_" + tourId + ".pdf";
 		//String dest = EXTERNAL_FILE_PATH + "\\" + fileName;
-//		Tour tour = tourService.getTourById(tourId);
-//		if (tour != null) {
-//			List<TourEventMapping> tourEventMapList = tourEventServiceMapping
-//					.getTourEventMappingByTourIdOrderByStartDate(tourId);
-//			try {
-//				new CalendarPdf().createPdf(dest, tour, tourEventMapList);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
+		//		Tour tour = tourService.getTourById(tourId);
+		//		if (tour != null) {
+		//			List<TourEventMapping> tourEventMapList = tourEventServiceMapping
+		//					.getTourEventMappingByTourIdOrderByStartDate(tourId);
+		//			try {
+		//				new CalendarPdf().createPdf(dest, tour, tourEventMapList);
+		//			} catch (Exception e) {
+		//				e.printStackTrace();
+		//			}
+		//		}
 		File file = new File(EXTERNAL_FILE_PATH + fileName);
 		if (file.exists()) {
 			Resource resource = loadFileAsResource(fileName);

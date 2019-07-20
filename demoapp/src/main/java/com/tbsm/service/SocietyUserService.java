@@ -32,6 +32,8 @@ public interface SocietyUserService {
 
 	public boolean existsBySocietyUsername(String username);
 
-	Page<SocietyUser> listPageBySocietyId(Long societyId, Pageable pageable);
+	Page<SocietyUser> listPageBySocietyId(Long societyId, Pageable pageable) throws ResourceNotFoundException;
+
+	Long getSocietyUserCount(Long societyId);
 
 }

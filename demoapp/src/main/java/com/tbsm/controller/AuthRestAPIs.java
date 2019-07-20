@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,15 @@ public class AuthRestAPIs {
 
 	@Autowired
 	EmailService emailService;
+
+	@Value("${tbsm.tejovatapp.awsTBSMIP}")
+	private String awsAdminIP;
+	
+	@Value("${tbsm.societyapp.awsTBSMIP}")
+	private String awsSocietyIP;
+	
+	public static final String FORGOT_URL = "/admin/setpassword;resetToken=";
+	public static final String FORGOT_URL2 = "/sessions/setpassword;resetToken=";
 
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) throws ResourceNotFoundException {
@@ -88,14 +98,13 @@ public class AuthRestAPIs {
 		if (user!=null) {
 			user.setToken(UUID.randomUUID().toString());
 			userService.save(user);
-			String appUrl = ApplicationUtility.FORGOT_URL+user.getToken()+";date="+forgotDate;
-			String emailContaint =   "Hi "+user.getFirstname()+" ," + "\n" + "\n" +
+			String appUrl = awsAdminIP+FORGOT_URL+user.getToken()+";date="+forgotDate;
+			String emailContaint =   "Hi "+user.getFirstname()+"," + "<br/><br/>\n" + "\n" +
 					"    To reset your password, click the link below:"+
-					"    \n" + 
 					"    <p style=\"padding-left: 10px;padding-right: 10px;line-height: 22px;\"><a>"+ 
 					appUrl+"</a>" + "\n" + "\n" 
 					+ "\n" + "\n" +
-					"\n" + 
+					"\n<br/>" + 
 					" <p>NOTE : This is an automated message. Please do not reply.</p>"+ "\n" +  "\n"+
 					" \n<p>Best Regards,<br>\n" + 
 					" The Tejovat Team</p>" + 
@@ -117,14 +126,17 @@ public class AuthRestAPIs {
 		if (user!=null) {
 			user.setToken(UUID.randomUUID().toString());
 			societyService.save(user);
-			String appUrl = ApplicationUtility.FORGOT_URL+user.getToken()+";date="+forgotDate;
-			String emailContaint =   "Hi "+user.getFirstname()+" ," + "\n" + "\n" +
+			String appUrl = awsSocietyIP+FORGOT_URL+user.getToken()+";date="+forgotDate;
+			String emailContaint =   "Hi "+user.getFirstname()+"," + "<br/><br/>\n" + "\n" +
 					"    To reset your password, click the link below:"+
-					"    \n" + 
 					"    <p style=\"padding-left: 10px;padding-right: 10px;line-height: 22px;\"><a>"+ 
 					appUrl+"</a>" + "\n" + "\n" 
 					+ "\n" + "\n" +
-					" NOTE : This is an automated message. Please do not reply."+ "\n" +  "\n"; 
+					"\n<br/>" + 
+					" <p>NOTE : This is an automated message. Please do not reply.</p>"+ "\n" +  "\n"+
+					" \n<p>Best Regards,<br>\n" + 
+					" The Tejovat Team</p>" + 
+					" \n" ;
 			try {
 				emailService.sendEmailHtml(emailContaint, user.getEmail(), "Password Reset Request");
 			}catch(Exception e) {
@@ -135,7 +147,7 @@ public class AuthRestAPIs {
 			return ResponseEntity.ok().body(user);
 		}
 	}
-	
+
 	@GetMapping(value = "/checkUserByToken")
 	public ResponseEntity<User> getUserByUserResetToken(@RequestParam("resetToken") String resetToken) throws ResourceNotFoundException {
 		User user = userService.getUserByToken(resetToken);

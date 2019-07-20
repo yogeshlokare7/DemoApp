@@ -110,4 +110,9 @@ public class UserServiceImpl implements UserService{
 		.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 	}
 
+	@Override
+	public Long getCount() {
+		return userRepository.count();
+	}
+
 }

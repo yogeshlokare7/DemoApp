@@ -73,4 +73,15 @@ public class ResidentServiceImpl implements ResidentService{
 		repo.updatePitureURL(id, pictureUrl);
 	}
 
+	@Override
+	public Long getResidentCount(Long societyId) {
+		return repo.countBySocietyId(societyId);
+	}
+
+	@Override
+	public Long getallResidentCount() {
+		// TODO Auto-generated method stub
+		return repo.count();
+	}
+
 }

@@ -28,4 +28,8 @@ public interface ResidentService {
 	public boolean existsByEmail(String email);
 
 	public void updatePitureURL(Long id, String pictureUrl);
+
+	public Long getResidentCount(Long societyId);
+
+	public Long getallResidentCount();
 }

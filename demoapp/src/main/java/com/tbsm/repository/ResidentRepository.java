@@ -20,5 +20,8 @@ public interface ResidentRepository extends PagingAndSortingRepository<Resident,
 	@Transactional
 	@Query(value="update residents SET picture =?2 WHERE id =?1", nativeQuery=true)
 	void updatePitureURL(Long id, String pictureUrl);
+	
+	@Query(value="SELECT count(*) FROM residents WHERE societyid =?1", nativeQuery=true)
+	Long countBySocietyId(Long societyId);
 
 }

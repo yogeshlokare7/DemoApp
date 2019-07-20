@@ -73,4 +73,9 @@ public class SecurityUserServiceImpl implements SecurityUserService{
 		return repo.existsByEmail(email);
 	}
 
+	@Override
+	public Long getSecurityCount(Long societyId) {
+		return repo.countBySocietyId(societyId);
+	}
+
 }

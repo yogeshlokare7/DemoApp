@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tbsm.exception.ResourceNotFoundException;
 import com.tbsm.model.SecurityUser;
-import com.tbsm.model.User;
 import com.tbsm.response.ResponseMessage;
 import com.tbsm.service.EmailService;
 import com.tbsm.service.SecurityUserService;
@@ -86,6 +85,7 @@ public class SecurityUserController {
 			securityUser2.setUsername(securityUser.getUsername());
 			securityUser2.setEmail(securityUser.getEmail());
 			securityUser2.setContactno(securityUser.getContactno());
+			securityUser2.setAlternatecontact(securityUser.getAlternatecontact());
 			securityUser2.setStreetno(securityUser.getStreetno());
 			securityUser2.setStreetname(securityUser.getStreetname());
 			securityUser2.setCity(securityUser.getCity());
@@ -93,17 +93,16 @@ public class SecurityUserController {
 			securityUser2.setProvince(securityUser.getProvince());
 			securityUser2.setCountry(securityUser.getCountry());
 			securityUser2.setStatus(securityUser.getStatus());
-			securityUser2.setRole(securityUser.getRole());
 			securityUser2.setDob(securityUser.getDob());
 			securityUser2.setGender(securityUser.getGender());
 			SecurityUser updatedUser = securityUserService.saveSecurityUser(securityUser2);
 			return ResponseEntity.ok().body(updatedUser);
 		}else {
 			if(securityUserService.existsByUsername(securityUser.getUsername())) { 
-				return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"), HttpStatus.BAD_REQUEST); 
+				return new ResponseEntity<>(new ResponseMessage("Username is already taken. Please try another!"), HttpStatus.BAD_REQUEST); 
 			}
 			if (securityUserService.existsByEmail(securityUser.getEmail())) { 
-				return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"), HttpStatus.BAD_REQUEST); 
+				return new ResponseEntity<>(new ResponseMessage("Email is already taken. Please try another!"), HttpStatus.BAD_REQUEST); 
 			}
 			String password = new CodeGeneratorUtils().generateRandomPassword();
 			securityUser.setPassword(SecureProcess.encrypt(password));

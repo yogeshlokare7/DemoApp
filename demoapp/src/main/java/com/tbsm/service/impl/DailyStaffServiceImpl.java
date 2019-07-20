@@ -60,4 +60,14 @@ public class DailyStaffServiceImpl implements DailyStaffService{
 		return repo.findAll(new Sort(Sort.Direction.DESC, "id"));
 	}
 
+	@Override
+	public void updatePictureURL(Long id, String pictureUrl) {
+		repo.updatePitureURL(id, pictureUrl);
+	}
+
+	@Override
+	public Long getStaffCount(Long societyId) {
+		return repo.countBySocietyId(societyId);
+	}
+
 }

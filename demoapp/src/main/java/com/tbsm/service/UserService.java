@@ -35,4 +35,6 @@ public interface UserService {
 
 	User getUserByToken(String resetToken) throws ResourceNotFoundException ;
 
+	Long getCount();
+
 }

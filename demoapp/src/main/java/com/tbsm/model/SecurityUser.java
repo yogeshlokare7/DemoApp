@@ -33,45 +33,35 @@ public class SecurityUser implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min=3, max = 50)
     private String firstname;
     
-    @Size(min=3, max = 50)
     private String lastname;
 
-    @Size(min=3, max = 50)
     private String username;
 
-    @Size(max = 50)
     private String email;
-    
-    @Size(max = 50)
-    private String contactno;
 
-    @Size(min=6, max = 100)
+    private String contactno;
+    
+    private String alternatecontact;
+
     private String password;
     
-    @Size(max = 70)
     @Column(name = "streetno")
     private String streetno;
     
-    @Size(max = 70)
     @Column(name = "streetname")
     private String streetname;
     
-    @Size(max = 20)
     @Column(name = "postalcode")
     private String postalcode;
     
-    @Size(max = 70)
     @Column(name = "city")
     private String city;
     
-    @Size(max = 45)
     @Column(name = "province")
     private String province;
     
-    @Size(max = 45)
     @Column(name = "country")
     private String country;
     
@@ -89,8 +79,7 @@ public class SecurityUser implements Serializable{
     @Column(name = "dob")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dob;
-   
-    @Size(max = 10)
+    
     @Column(name = "rating")
     private String rating;
     
@@ -106,16 +95,11 @@ public class SecurityUser implements Serializable{
 	@Column(name="coltwo")
 	private String coltwo;
 	
-    @Size(max = 70)
     @Column(name = "apartment")
     private String apartment;
     
     @Column(name = "societyid")
     private Long societyid;
-    
-    @JoinColumn(name="role", referencedColumnName = "id")
-    @ManyToOne
-    private Role role;
 
     public SecurityUser() {
     	
@@ -312,13 +296,12 @@ public class SecurityUser implements Serializable{
 	public void setSocietyid(Long societyid) {
 		this.societyid = societyid;
 	}
-
-	public Role getRole() {
-		return role;
+	public String getAlternatecontact() {
+		return alternatecontact;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setAlternatecontact(String alternatecontact) {
+		this.alternatecontact = alternatecontact;
 	}
 
 	@Override
@@ -329,7 +312,7 @@ public class SecurityUser implements Serializable{
 				+ ", province=" + province + ", country=" + country + ", token=" + token + ", picture=" + picture
 				+ ", gender=" + gender + ", dob=" + dob + ", rating=" + rating + ", status=" + status
 				+ ", loginallowed=" + loginallowed + ", colone=" + colone + ", coltwo=" + coltwo + ", apartment="
-				+ apartment + ", societyid=" + societyid + ", role=" + role + "]";
+				+ apartment + ", societyid=" + societyid + "]";
 	}
     
 }

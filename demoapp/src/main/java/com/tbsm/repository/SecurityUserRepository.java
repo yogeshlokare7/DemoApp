@@ -21,4 +21,7 @@ public interface SecurityUserRepository extends PagingAndSortingRepository<Secur
 
 	boolean existsByEmail(String email);
 
+	@Query(value="SELECT count(*) FROM security_user WHERE societyid =?1", nativeQuery=true)
+	Long countBySocietyId(Long societyId);
+
 }

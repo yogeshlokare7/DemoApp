@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tbsm.exception.ResourceNotFoundException;
+import com.tbsm.model.SocietyMaster;
 import com.tbsm.model.SocietyUser;
 import com.tbsm.repository.SocietyUserRepository;
+import com.tbsm.service.SocietyService;
 import com.tbsm.service.SocietyUserService;
 import com.tbsm.utils.SecureProcess;
 
@@ -20,6 +22,9 @@ public class SocietyUserServiceImpl implements SocietyUserService{
 	
 	@Autowired
 	private SocietyUserRepository repo;
+	
+	@Autowired
+	private SocietyService societyService;
 
 	@Override
 	public SocietyUser login(String username, String password) throws ResourceNotFoundException {
@@ -105,8 +110,14 @@ public class SocietyUserServiceImpl implements SocietyUserService{
 	}
 
 	@Override
-	public Page<SocietyUser> listPageBySocietyId(Long societyId, Pageable pageable) {
-		return repo.findBySocietyid(societyId, pageable);
+	public Page<SocietyUser> listPageBySocietyId(Long societyId, Pageable pageable) throws ResourceNotFoundException {
+		SocietyMaster society = societyService.getSocietyById(societyId);
+		return repo.findBySocietyid(society, pageable);
+	}
+
+	@Override
+	public Long getSocietyUserCount(Long societyId) {
+		return repo.countBySocietyId(societyId);
 	}
 
 }

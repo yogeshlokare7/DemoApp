@@ -62,7 +62,7 @@ public class SocietyUserController {
 	}
 	
 	@GetMapping("/list/{societyId}")
-	public Page<SocietyUser> showPage(@PathVariable("societyId") Long societyId, Pageable pageable){
+	public Page<SocietyUser> showPage(@PathVariable("societyId") Long societyId, Pageable pageable) throws ResourceNotFoundException{
 		logger.debug("inside UserController.showPage() method");
 		Page<SocietyUser> pageInfo = societyUserService.listPageBySocietyId(societyId, pageable);
 		return pageInfo;

@@ -22,4 +22,8 @@ public interface DailyStaffService {
 	public Map<String, Boolean> removeDailyStaffById(Long dailyStaffId) throws ResourceNotFoundException;
 
 	public List<DailyStaff> getList();
+
+	public void updatePictureURL(Long id, String pictureUrl);
+
+	public Long getStaffCount(Long societyId);
 }

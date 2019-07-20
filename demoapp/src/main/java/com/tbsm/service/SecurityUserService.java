@@ -28,4 +28,6 @@ public interface SecurityUserService {
 	public boolean existsByUsername(String username);
 
 	public boolean existsByEmail(String email);
+
+	public Long getSecurityCount(Long societyId);
 }
